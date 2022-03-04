@@ -39,15 +39,11 @@ const tourSchema = new mongoose.Schema(
                 message: 'Difficulty is either: easy, medium, difficult'
             },
         },
-        rating: {
+        ratingsAverage: {
             type: Number,
             default: 4.5,
             min: [1, 'Rating must be above 1.0'],
             max: [5, 'Rating must be below 5.0'],
-        },
-        ratingAverage: {
-            type: Number,
-            default: 4.5,
         },
         ratingsQuantity: {
             type: Number,
@@ -109,15 +105,15 @@ tourSchema.pre('save', function (next) {
     next();
 });
 
-tourSchema.pre('save', (next) => {
-    console.log('will save');
-    next();
-});
+// tourSchema.pre('save', (next) => {
+//     console.log('will save');
+//     next();
+// });
 
-tourSchema.post('save', (doc, next) => {
-    console.log(doc);
-    next();
-});
+// tourSchema.post('save', (doc, next) => {
+//     console.log(doc);
+//     next();
+// });
 
 // Query middleware
 // tourSchema.pre('find',function(next){
@@ -127,15 +123,9 @@ tourSchema.pre(/^find/, function (next) {
     next();
 });
 
-// tourSchema.pre('findOne', function(next) {
-//     this.find({secretTour: {$ne: true}})
-//     next();
-// })
-
-tourSchema.pre(/^find/, function (docs, next) {
-    console.log(`Query took ${Date.now() - this.start} milliseconds`);
-    console.log(docs);
-    next();
+tourSchema.post(/^find/, function (docs, next) {
+  console.log(`Query took ${Date.now() - this.start} milliseconds`);
+  next();
 });
 
 // AGGREGATION MIDDLEWARE
